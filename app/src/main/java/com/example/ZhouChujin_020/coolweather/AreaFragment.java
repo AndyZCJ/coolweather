@@ -1,6 +1,7 @@
-package com.example.a22901.coolweather;
+package com.example.ZhouChujin_020.coolweather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,23 +15,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a22901.coolweather.db.City;
-import com.example.a22901.coolweather.db.County;
-import com.example.a22901.coolweather.db.Province;
-import com.example.a22901.coolweather.util.HttpUtil;
-import com.example.a22901.coolweather.util.Utility;
+import com.example.ZhouChujin_020.coolweather.db.City;
+import com.example.ZhouChujin_020.coolweather.db.County;
+import com.example.ZhouChujin_020.coolweather.db.Province;
+import com.example.ZhouChujin_020.coolweather.util.HttpUtil;
+import com.example.ZhouChujin_020.coolweather.util.Utility;
 
 
 import org.litepal.crud.DataSupport;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.Response;
 
 /**
@@ -92,6 +91,19 @@ public class AreaFragment extends Fragment {
                 }else if(currentLevel == LEVEL_CITY){
                     selectedCity = cityList.get(position);
                     queryCounties();
+                }else if(currentLevel == LEVEL_COUNTY){
+                    String weatherId = countyList.get(position).getWeatherId();
+                    if(getActivity() instanceof MainActivity){
+                        Intent intent = new Intent(getActivity(),WeatherActivity.class);
+                        intent.putExtra("weather_id",weatherId);
+                        getActivity().finish();
+                    }else if (getActivity() instanceof WeatherActivity){
+                        WeatherActivity activity = (WeatherActivity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefresh.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
+
                 }
             }
         });
@@ -168,8 +180,6 @@ public class AreaFragment extends Fragment {
     private void queryFromServer(String address, final String type){
         showProgressDialog();
         HttpUtil.sendOkHttpRequest(address, new Callback() {
-
-
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {

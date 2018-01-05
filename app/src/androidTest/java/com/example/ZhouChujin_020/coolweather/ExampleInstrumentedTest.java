@@ -1,4 +1,4 @@
-package com.example.a22901.coolweather;
+package com.example.ZhouChujin_020.coolweather;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

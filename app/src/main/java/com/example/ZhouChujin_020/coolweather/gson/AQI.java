@@ -1,4 +1,4 @@
-package com.example.a22901.coolweather.gson;
+package com.example.ZhouChujin_020.coolweather.gson;
 
 /**
  * Created by 22901 on 2018/1/5.
