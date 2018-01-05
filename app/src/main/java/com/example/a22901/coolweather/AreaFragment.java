@@ -20,6 +20,7 @@ import com.example.a22901.coolweather.db.Province;
 import com.example.a22901.coolweather.util.HttpUtil;
 import com.example.a22901.coolweather.util.Utility;
 
+
 import org.litepal.crud.DataSupport;
 
 import java.io.IOError;
@@ -104,6 +105,7 @@ public class AreaFragment extends Fragment {
                 }
             }
         });
+        queryProvinces();
     }
 
     private void queryProvinces(){
@@ -127,7 +129,7 @@ public class AreaFragment extends Fragment {
     private void queryCities(){
         titleText.setText(selectedProvince.getProvinceName());
         backButton.setVisibility(View.VISIBLE);
-        cityList = DataSupport.where("provinced = ?",String.valueOf(selectedProvince.getId())).find(City.class);
+        cityList = DataSupport.where("provinceid = ?",String.valueOf(selectedProvince.getId())).find(City.class);
         if (cityList.size() > 0){
             dataList.clear();
             for (City city : cityList){
